@@ -17,7 +17,7 @@ import styles from './login.style';
 
 export default function LoginComponent({navigation}) {
   const navigateToDashboard = () => {
-    navigation.navigate('ExistingUser');
+    navigation.navigate('Register');
   };
   return (
     <View style={styles.fullScreen}>
