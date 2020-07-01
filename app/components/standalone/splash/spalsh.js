@@ -13,10 +13,17 @@ export default function Splash({navigation}) {
     _LoginCheck();
   }, []);
 
-  const _LoginCheck = () => {
-    setTimeout(() => {
-      navigation.navigate('UserStack');
-    }, 3000);
+  const _LoginCheck = async () => {
+    const data = await asyncStorageFunction.retrieveData('fullName');
+    if (data == false) {
+      setTimeout(() => {
+        navigation.navigate('UserStack');
+      }, 1000);
+    } else {
+      setTimeout(() => {
+        navigation.navigate('ExistingUser');
+      }, 1000);
+    }
   };
 
   return (

@@ -6,6 +6,7 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -13,11 +14,42 @@ import {
 } from 'react-native-responsive-screen';
 
 import asyncStorageFunction from './../../../lib/asyncStorage.lib';
+import validate from './../../validations/validate';
+
 import styles from './login.style';
 
 export default function LoginComponent({navigation}) {
-  const navigateToDashboard = () => {
-    navigation.navigate('Register');
+  const [fullName, setFullName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [address, setAddress] = useState('');
+
+  const navigateToDashboard = async () => {
+    let data = {
+      fullName: fullName,
+      phone: phone,
+      address: address,
+    };
+    const {errors, isValid} = validate.checkRegistration(data);
+
+    if (!isValid) {
+      let errorString = '';
+      for (let i in errors) {
+        errorString = errorString + errors[i] + '\n';
+        if (i == errors.length - 1) {
+          Alert.alert(
+            'Please fill fields',
+            errorString,
+            [{text: 'OK', onPress: () => {}}],
+            {cancelable: false},
+          );
+        }
+      }
+    } else {
+      await asyncStorageFunction.storeData('fullName', fullName);
+      await asyncStorageFunction.storeData('phone', phone);
+      await asyncStorageFunction.storeData('address', address);
+      navigation.navigate('Register');
+    }
   };
   return (
     <View style={styles.fullScreen}>
@@ -67,18 +99,14 @@ export default function LoginComponent({navigation}) {
               returnKeyType="next"
               keyboardType="email-address"
               autoCapitalize="none"
-              // value={username}
+              value={fullName}
               autoCorrect={false}
               maxLength={30}
-              // autoFocus={true}
               placeholder="Full Name"
               placeholderTextColor="black"
-              // onChangeText={(username) => {
-              //   setUsername(username);
-              // }}
-              // onSubmitEditing={() => {
-              //   passwordInput.focus();
-              // }}
+              onChangeText={fullName => {
+                setFullName(fullName);
+              }}
             />
           </View>
           <View style={{paddingTop: hp('2%')}}>
@@ -92,13 +120,13 @@ export default function LoginComponent({navigation}) {
               // value={password}
               inlineImageLeft="mail"
               autoCorrect={false}
-              maxLength={30}
+              maxLength={10}
               placeholder="Mobile"
               placeholderTextColor="black"
               // ref={(input) => (this.passwordInput = input)}
-              // onChangeText={(password) => {
-              //   setPassword(password);
-              // }}
+              onChangeText={phone => {
+                setPhone(phone);
+              }}
               // onSubmitEditing={() => NaviagteToDashboard()}
             />
           </View>
@@ -114,14 +142,14 @@ export default function LoginComponent({navigation}) {
               inlineImageLeft="mail"
               autoCorrect={false}
               secureTextEntry={true}
-              maxLength={30}
+              maxLength={40}
               placeholder="Address"
               placeholderTextColor="black"
               // ref={(input) => (this.passwordInput = input)}
-              // onChangeText={(password) => {
-              //   setPassword(password);
-              // }}
-              // onSubmitEditing={() => NaviagteToDashboard()}
+              onChangeText={address => {
+                setAddress(address);
+              }}
+              onSubmitEditing={() => NaviagteToDashboard()}
             />
           </View>
         </View>
@@ -129,8 +157,6 @@ export default function LoginComponent({navigation}) {
       <View
         style={{
           flex: 1,
-          // justifyContent: 'flex-end',
-          // marginBottom: hp('5%'),
           justifyContent: 'center',
           alignItems: 'center',
         }}>

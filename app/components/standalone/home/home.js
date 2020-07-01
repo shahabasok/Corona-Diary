@@ -5,13 +5,47 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import QRCode from 'react-native-qrcode-svg';
+import asyncStorageFunction from './../../../lib/asyncStorage.lib';
 
 import styles from './home.style';
 
 export default function HomeComponent({navigation}) {
-  const [qrCodeText, setQrCodeText] = useState(
-    'Mohammed Shahabas, Full Stack Developer',
-  );
+  const [qrCodeText, setQrCodeText] = useState('No data found');
+  const [userName, setuserName] = useState('');
+
+  useEffect(() => {
+    _fetchDetails();
+  }, []);
+
+  const _fetchDetails = async () => {
+    let fullName = await asyncStorageFunction.retrieveData('fullName');
+    let phone = await asyncStorageFunction.retrieveData('phone');
+    let address = await asyncStorageFunction.retrieveData('address');
+    let vehNum = await asyncStorageFunction.retrieveData('vehNum');
+
+    setuserName(fullName);
+
+    if (vehNum == false) {
+      let qrData = {
+        firstName: fullName,
+        phone: phone,
+        address: address,
+        vehicleReg: '',
+      };
+
+      setQrCodeText(JSON.stringify(qrData));
+    } else {
+      let qrData = {
+        firstName: fullName,
+        phone: phone,
+        address: address,
+        vehicleReg: vehNum,
+      };
+
+      setQrCodeText(JSON.stringify(qrData));
+    }
+  };
+
   return (
     <View style={styles.fullScreen}>
       <View
@@ -33,7 +67,7 @@ export default function HomeComponent({navigation}) {
             fontSize: wp('6%'),
             fontWeight: 'bold',
           }}>
-          Jake James
+          {userName}
         </Text>
       </View>
       <View

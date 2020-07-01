@@ -21,7 +21,7 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   input: {
-    color: 'white',
+    color: 'black',
     width: wp('75%'),
     backgroundColor: 'white',
     borderRadius: 5,
@@ -31,7 +31,7 @@ export default StyleSheet.create({
     paddingRight: wp('5%'),
   },
   input1: {
-    color: 'white',
+    color: 'black',
     width: wp('75%'),
     backgroundColor: 'white',
     borderRadius: 5,

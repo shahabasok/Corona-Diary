@@ -6,6 +6,7 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -13,11 +14,37 @@ import {
 } from 'react-native-responsive-screen';
 
 import asyncStorageFunction from './../../../lib/asyncStorage.lib';
+import validate from './../../validations/validate';
+
 import styles from './vehiclereg.style';
 
 export default function VehicleRegComponent({navigation}) {
-  const NavigateToHome = () => {
-    navigation.navigate('Success');
+  const [vehicleReg, setVehicleReg] = useState('');
+
+  const NavigateToHome = async () => {
+    let data = {
+      regNum: vehicleReg,
+    };
+
+    const {errors, isValid} = validate.checkVehicleReg(data);
+
+    if (!isValid) {
+      let errorString = '';
+      for (let i in errors) {
+        errorString = errorString + errors[i] + '\n';
+        if (i == errors.length - 1) {
+          Alert.alert(
+            'Error !!',
+            errorString,
+            [{text: 'OK', onPress: () => {}}],
+            {cancelable: false},
+          );
+        }
+      }
+    } else {
+      await asyncStorageFunction.storeData('vehNum', vehicleReg);
+      navigation.navigate('Success');
+    }
   };
   return (
     <View style={styles.fullScreen}>
@@ -74,18 +101,16 @@ export default function VehicleRegComponent({navigation}) {
             returnKeyType="next"
             autoCapitalize="none"
             multiline={true}
-            // value={password}
+            value={vehicleReg}
             inlineImageLeft="mail"
             autoCorrect={false}
             secureTextEntry={true}
             maxLength={30}
             placeholder="Vehicle Number"
             placeholderTextColor="black"
-            // ref={(input) => (this.passwordInput = input)}
-            // onChangeText={(password) => {
-            //   setPassword(password);
-            // }}
-            // onSubmitEditing={() => NaviagteToDashboard()}
+            onChangeText={vehicleReg => {
+              setVehicleReg(vehicleReg);
+            }}
           />
         </View>
       </View>
