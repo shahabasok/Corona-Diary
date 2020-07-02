@@ -7,10 +7,11 @@ import {
   TextInput,
   Alert,
 } from 'react-native';
+import styles from './myroute.style';
 
 export default function MyRouteComponent({navigation}) {
   return (
-    <View>
+    <View style={styles.fullScreen}>
       <Text>My Route screen</Text>
     </View>
   );

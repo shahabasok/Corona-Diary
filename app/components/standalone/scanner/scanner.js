@@ -206,6 +206,7 @@ export default function ScannerComponent({navigation}) {
                 style={{
                   color: 'white',
                   fontSize: wp('7%'),
+                  textAlign: 'center',
                 }}>
                 {scannedData.address}
               </Text>

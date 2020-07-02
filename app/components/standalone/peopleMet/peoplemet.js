@@ -12,6 +12,7 @@ import styles from './peoplemet.style';
 
 export default function PeopleMetComponent({navigation}) {
   const [peopleMetData, setPeopleMetData] = useState('');
+  const [showEmptyMessage, setShowEmptyMessage] = useState(true);
   const isFocused = useIsFocused();
 
   useEffect(() => {
@@ -23,7 +24,9 @@ export default function PeopleMetComponent({navigation}) {
 
     if (peopleData == false) {
       setPeopleMetData('');
+      setShowEmptyMessage(true);
     } else {
+      setShowEmptyMessage(false);
       let dataToDisplay = JSON.parse(peopleData);
       setPeopleMetData(dataToDisplay);
     }
@@ -31,6 +34,17 @@ export default function PeopleMetComponent({navigation}) {
 
   return (
     <View style={styles.fullScreen}>
+      {showEmptyMessage && (
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <Text
+            style={{
+              color: 'white',
+              fontSize: wp('7%'),
+            }}>
+            No Data Found !!
+          </Text>
+        </View>
+      )}
       <FlatList
         data={peopleMetData}
         renderItem={({item}) => (

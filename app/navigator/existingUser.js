@@ -16,7 +16,12 @@ const TopTabs = createMaterialTopTabNavigator();
 
 function LocationStackScreen() {
   return (
-    <TopTabs.Navigator>
+    <TopTabs.Navigator
+      tabBarOptions={{
+        activeTintColor: 'white',
+        indicatorStyle: {backgroundColor: '#FFB301'},
+        style: {backgroundColor: '#4B92E0'},
+      }}>
       <Tab.Screen name="Your Route Map" component={MyRouteComponent} />
       <Tab.Screen name="People You Met" component={PeopleMetComponent} />
     </TopTabs.Navigator>
