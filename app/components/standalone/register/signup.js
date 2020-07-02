@@ -3,19 +3,39 @@ import {
   View,
   Text,
   StatusBar,
-  Image,
-  TextInput,
   TouchableOpacity,
+  BackHandler,
+  Alert,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
-import asyncStorageFunction from './../../../lib/asyncStorage.lib';
 import styles from './signup.style';
 
 export default function SignUpComponent({navigation}) {
+  useEffect(() => {
+    const backAction = () => {
+      Alert.alert('Hold on!', 'Are you sure you want to go back?', [
+        {
+          text: 'Cancel',
+          onPress: () => null,
+          style: 'cancel',
+        },
+        {text: 'YES', onPress: () => BackHandler.exitApp()},
+      ]);
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => backHandler.remove();
+  }, []);
+
   const NavigateToSuccess = () => {
     navigation.navigate('Success');
   };
@@ -23,6 +43,7 @@ export default function SignUpComponent({navigation}) {
   const NavigateToVehicleRegistration = () => {
     navigation.navigate('Vehicle');
   };
+
   return (
     <View style={styles.fullScreen}>
       <View>

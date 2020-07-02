@@ -3,9 +3,10 @@ import {
   View,
   Text,
   StatusBar,
-  Image,
   Dimensions,
   TouchableOpacity,
+  BackHandler,
+  Alert,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -13,10 +14,30 @@ import {
 } from 'react-native-responsive-screen';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import asyncStorageFunction from './../../../lib/asyncStorage.lib';
 import styles from './success.style';
 
 export default function SuccessComponent({navigation}) {
+  useEffect(() => {
+    const backAction = () => {
+      Alert.alert('Hold on!', 'Are you sure you want to Exit?', [
+        {
+          text: 'Cancel',
+          onPress: () => null,
+          style: 'cancel',
+        },
+        {text: 'YES', onPress: () => BackHandler.exitApp()},
+      ]);
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => backHandler.remove();
+  }, []);
+
   const NavigateToHome = () => {
     navigation.navigate('ExistingUser');
   };

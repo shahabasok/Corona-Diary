@@ -117,17 +117,15 @@ export default function LoginComponent({navigation}) {
               keyboardType="numeric"
               returnKeyType="next"
               autoCapitalize="none"
-              // value={password}
+              value={phone}
               inlineImageLeft="mail"
               autoCorrect={false}
               maxLength={10}
               placeholder="Mobile"
               placeholderTextColor="black"
-              // ref={(input) => (this.passwordInput = input)}
               onChangeText={phone => {
                 setPhone(phone);
               }}
-              // onSubmitEditing={() => NaviagteToDashboard()}
             />
           </View>
           <View style={{paddingTop: hp('2%')}}>
@@ -138,14 +136,13 @@ export default function LoginComponent({navigation}) {
               returnKeyType="next"
               autoCapitalize="none"
               multiline={true}
-              // value={password}
+              value={address}
               inlineImageLeft="mail"
               autoCorrect={false}
               secureTextEntry={true}
-              maxLength={40}
+              maxLength={70}
               placeholder="Address"
               placeholderTextColor="black"
-              // ref={(input) => (this.passwordInput = input)}
               onChangeText={address => {
                 setAddress(address);
               }}
