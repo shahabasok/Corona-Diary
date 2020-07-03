@@ -8,6 +8,7 @@ import {
   Alert,
 } from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
+import {useIsFocused} from '@react-navigation/native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -20,6 +21,11 @@ import asyncStorageFunction from '../../../lib/asyncStorage.lib';
 export default function ScannerComponent({navigation}) {
   const [showCamera, setShowCamera] = useState(true);
   const [scannedData, setScannedData] = useState('');
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    setShowCamera(true);
+  }, [isFocused]);
 
   const onSuccess = QrCodeDta => {
     try {
@@ -97,7 +103,7 @@ export default function ScannerComponent({navigation}) {
 
       setScannedData('');
       setShowCamera(true);
-      navigation.goBack();
+      navigation.navigate('Location', {Screen: 'People You Met'});
     }
   };
 

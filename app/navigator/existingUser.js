@@ -9,12 +9,55 @@ import HomeComponent from './../components/standalone/home/home';
 import ScannerComponent from './../components/standalone/scanner/scanner';
 import MyRouteComponent from './../components/standalone/myRoute/myroute';
 import PeopleMetComponent from './../components/standalone/peopleMet/peoplemet';
+import AddPeopleComponent from './../components/standalone/addPeople/addpeople';
 
-const LocationStack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
 const TopTabs = createMaterialTopTabNavigator();
+const TopStack = createStackNavigator();
+
+const HomeStack = createStackNavigator();
+
+function HomeStackScreen() {
+  return (
+    <HomeStack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}>
+      <HomeStack.Screen name="Home" component={HomeComponent} />
+      <HomeStack.Screen name="AddPeople" component={AddPeopleComponent} />
+    </HomeStack.Navigator>
+  );
+}
+
+const ScannerStack = createStackNavigator();
+
+function ScannerStackScreen() {
+  return (
+    <ScannerStack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}>
+      <ScannerStack.Screen name="Scanner" component={ScannerComponent} />
+      <ScannerStack.Screen name="AddPeople" component={AddPeopleComponent} />
+    </ScannerStack.Navigator>
+  );
+}
+
+const LocationStack = createStackNavigator();
 
 function LocationStackScreen() {
+  return (
+    <LocationStack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}>
+      <LocationStack.Screen name="Location" component={Locations} />
+      <LocationStack.Screen name="AddPeople" component={AddPeopleComponent} />
+    </LocationStack.Navigator>
+  );
+}
+
+function Locations() {
   return (
     <TopTabs.Navigator
       tabBarOptions={{
@@ -37,7 +80,7 @@ export const ExistingUserStack = () => {
         barStyle={{backgroundColor: 'white'}}>
         <Tab.Screen
           name="Home"
-          component={HomeComponent}
+          component={HomeStackScreen}
           options={{
             tabBarLabel: 'Home',
             tabBarIcon: ({color}) => (
@@ -46,8 +89,8 @@ export const ExistingUserStack = () => {
           }}
         />
         <Tab.Screen
-          name="Sanner"
-          component={ScannerComponent}
+          name="Scanner"
+          component={ScannerStackScreen}
           options={{
             tabBarLabel: 'Scanner',
             tabBarIcon: ({color}) => (

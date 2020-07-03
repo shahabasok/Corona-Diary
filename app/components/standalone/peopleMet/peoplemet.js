@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, FlatList} from 'react-native';
+import {View, Text, FlatList, TouchableOpacity, Dimensions} from 'react-native';
 import {useIsFocused} from '@react-navigation/native';
 import asyncStorageFunction from '../../../lib/asyncStorage.lib';
 import {
@@ -30,6 +30,10 @@ export default function PeopleMetComponent({navigation}) {
       let dataToDisplay = JSON.parse(peopleData);
       setPeopleMetData(dataToDisplay);
     }
+  };
+
+  const addPeople = async () => {
+    navigation.navigate('AddPeople');
   };
 
   return (
@@ -65,14 +69,24 @@ export default function PeopleMetComponent({navigation}) {
                   alignItems: 'center',
                 }}>
                 <Icon name={'map-marker'} color={'white'} size={wp('5%')} />
-                <Text
-                  style={{
-                    color: 'white',
-                    fontSize: wp('4%'),
-                    width: wp('40%'),
-                  }}>
-                  {item.address}
-                </Text>
+                <View>
+                  <Text
+                    style={{
+                      color: 'white',
+                      fontSize: wp('4%'),
+                      width: wp('40%'),
+                    }}>
+                    {item.address}
+                  </Text>
+                  <Text
+                    style={{
+                      color: 'white',
+                      fontSize: wp('4%'),
+                      width: wp('40%'),
+                    }}>
+                    {item.phone}
+                  </Text>
+                </View>
               </View>
 
               <View>
@@ -103,6 +117,13 @@ export default function PeopleMetComponent({navigation}) {
         )}
         keyExtractor={(item, index) => index.toString()}
       />
+      <TouchableOpacity onPress={() => addPeople()} style={styles.fab}>
+        <Icon
+          name={'plus'}
+          color={'white'}
+          size={Dimensions.get('window').width * 0.15}
+        />
+      </TouchableOpacity>
     </View>
   );
 }
