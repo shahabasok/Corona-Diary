@@ -11,6 +11,7 @@ import MyRouteComponent from './../components/standalone/myRoute/myroute';
 import PeopleMetComponent from './../components/standalone/peopleMet/peoplemet';
 import AddPeopleComponent from './../components/standalone/addPeople/addpeople';
 import ProfileComponent from './../components/standalone/profile/profile';
+import MyLocationComponent from './../components/standalone/myLocation/mylocation';
 
 const Tab = createMaterialBottomTabNavigator();
 const TopTabs = createMaterialTopTabNavigator();
@@ -54,6 +55,7 @@ function LocationStackScreen() {
       }}>
       <LocationStack.Screen name="Location" component={Locations} />
       <LocationStack.Screen name="AddPeople" component={AddPeopleComponent} />
+      <LocationStack.Screen name="MyLocation" component={MyLocationComponent} />
     </LocationStack.Navigator>
   );
 }

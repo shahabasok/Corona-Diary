@@ -29,6 +29,7 @@ export default function AddPeopleComponent({navigation}) {
       phone: phone,
       address: address,
     };
+
     const {errors, isValid} = validate.checkRegistration(data);
 
     if (!isValid) {
@@ -78,10 +79,6 @@ export default function AddPeopleComponent({navigation}) {
 
         navigation.goBack();
       }
-      // await asyncStorageFunction.storeData('fullName', fullName);
-      // await asyncStorageFunction.storeData('phone', phone);
-      // await asyncStorageFunction.storeData('address', address);
-      // navigation.navigate('Register');
     }
   };
 

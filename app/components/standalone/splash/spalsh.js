@@ -28,12 +28,6 @@ export default function Splash({navigation}) {
 
   return (
     <View style={styles.fullScreen}>
-      <StatusBar
-        backgroundColor="#3A77CC"
-        barStyle="light-content"
-        translucent={true}
-        networkActivityIndicatorVisible={true}
-      />
       <View style={styles.headerContainer}>
         <Text style={{color: 'white', fontSize: wp('12%')}}>Covid</Text>
         <Text style={{color: 'white', fontSize: wp('15%'), fontWeight: 'bold'}}>

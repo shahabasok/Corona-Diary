@@ -46,14 +46,6 @@ export default function SignUpComponent({navigation}) {
 
   return (
     <View style={styles.fullScreen}>
-      <View>
-        <StatusBar
-          backgroundColor="#3A77CC"
-          barStyle="light-content"
-          translucent={true}
-          networkActivityIndicatorVisible={true}
-        />
-      </View>
       <View style={{paddingTop: hp('5%'), flexDirection: 'row-reverse'}}>
         <Text
           style={{

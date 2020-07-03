@@ -25,8 +25,6 @@ export default function HomeComponent({navigation}) {
     let address = await asyncStorageFunction.retrieveData('address');
     let vehNum = await asyncStorageFunction.retrieveData('vehNum');
 
-    console.log(address);
-
     setuserName(fullName);
 
     if (vehNum == false) {

@@ -69,6 +69,38 @@ const validate = {
       isValid: isEmpty(errors),
     };
   },
+  checkLocationData: function(data) {
+    let errors = [];
+
+    data.address = isEmpty(data.address) ? '' : data.address;
+
+    data.date = isEmpty(data.date) ? '' : data.date;
+
+    data.time = isEmpty(data.time) ? '' : data.time;
+
+    if (validator.isEmpty(data.address)) {
+      errors.push('Address is required');
+    }
+
+    if (validator.isEmpty(data.date)) {
+      errors.push('Please select a date');
+    }
+
+    if (validator.isEmpty(data.time)) {
+      errors.push('Please select time');
+    }
+
+    if (!isEmpty(data.address)) {
+      if (!validator.isLength(data.address, {min: 10})) {
+        errors.push('Address must be atleast 10 characters long');
+      }
+    }
+
+    return {
+      errors,
+      isValid: isEmpty(errors),
+    };
+  },
 };
 
 export default validate;
