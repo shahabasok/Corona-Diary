@@ -10,10 +10,10 @@ import ScannerComponent from './../components/standalone/scanner/scanner';
 import MyRouteComponent from './../components/standalone/myRoute/myroute';
 import PeopleMetComponent from './../components/standalone/peopleMet/peoplemet';
 import AddPeopleComponent from './../components/standalone/addPeople/addpeople';
+import ProfileComponent from './../components/standalone/profile/profile';
 
 const Tab = createMaterialBottomTabNavigator();
 const TopTabs = createMaterialTopTabNavigator();
-const TopStack = createStackNavigator();
 
 const HomeStack = createStackNavigator();
 
@@ -25,6 +25,7 @@ function HomeStackScreen() {
       }}>
       <HomeStack.Screen name="Home" component={HomeComponent} />
       <HomeStack.Screen name="AddPeople" component={AddPeopleComponent} />
+      <HomeStack.Screen name="Profile" component={ProfileComponent} />
     </HomeStack.Navigator>
   );
 }

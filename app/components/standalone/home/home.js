@@ -1,27 +1,31 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StatusBar} from 'react-native';
+import {View, Text, Image, TouchableOpacity} from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import QRCode from 'react-native-qrcode-svg';
 import asyncStorageFunction from './../../../lib/asyncStorage.lib';
+import {useIsFocused} from '@react-navigation/native';
 
 import styles from './home.style';
 
 export default function HomeComponent({navigation}) {
   const [qrCodeText, setQrCodeText] = useState('No data found');
   const [userName, setuserName] = useState('');
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     _fetchDetails();
-  }, []);
+  }, [isFocused]);
 
   const _fetchDetails = async () => {
     let fullName = await asyncStorageFunction.retrieveData('fullName');
     let phone = await asyncStorageFunction.retrieveData('phone');
     let address = await asyncStorageFunction.retrieveData('address');
     let vehNum = await asyncStorageFunction.retrieveData('vehNum');
+
+    console.log(address);
 
     setuserName(fullName);
 
@@ -46,6 +50,10 @@ export default function HomeComponent({navigation}) {
     }
   };
 
+  const NavigateToProfile = () => {
+    navigation.navigate('Profile');
+  };
+
   return (
     <View style={styles.fullScreen}>
       <View
@@ -54,21 +62,31 @@ export default function HomeComponent({navigation}) {
           paddingTop: hp('2%'),
           paddingHorizontal: wp('5%'),
         }}>
-        <Text
-          style={{
-            color: 'white',
-            fontSize: wp('6%'),
-          }}>
-          Hi,
-        </Text>
-        <Text
-          style={{
-            color: 'white',
-            fontSize: wp('6%'),
-            fontWeight: 'bold',
-          }}>
-          {userName}
-        </Text>
+        <View style={{justifyContent: 'flex-start', flexDirection: 'row'}}>
+          <View>
+            <TouchableOpacity onPress={() => NavigateToProfile()}>
+              <Image source={require('./../../../../assets/images/user.png')} />
+            </TouchableOpacity>
+          </View>
+          <View style={{left: 10, justifyContent: 'center'}}>
+            <Text
+              style={{
+                textAlign: 'left',
+                color: 'white',
+                fontSize: wp('5%'),
+              }}>
+              Hi,
+            </Text>
+            <Text
+              style={{
+                color: 'white',
+                fontSize: wp('5%'),
+                fontWeight: 'bold',
+              }}>
+              {userName}
+            </Text>
+          </View>
+        </View>
       </View>
       <View
         style={{

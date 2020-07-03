@@ -25,7 +25,7 @@ export default function LoginComponent({navigation}) {
 
   const navigateToDashboard = async () => {
     let data = {
-      fullName: fullName,
+      firstName: fullName,
       phone: phone,
       address: address,
     };

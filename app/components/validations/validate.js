@@ -5,12 +5,12 @@ const validate = {
   checkRegistration: function(data) {
     let errors = [];
 
-    data.fullName = isEmpty(data.fullName) ? '' : data.fullName;
+    data.firstName = isEmpty(data.firstName) ? '' : data.firstName;
 
     data.phone = isEmpty(data.phone) ? '' : data.phone;
     data.address = isEmpty(data.address) ? '' : data.address;
 
-    if (validator.isEmpty(data.fullName)) {
+    if (validator.isEmpty(data.firstName)) {
       errors.push('Full Name is required');
     }
 
@@ -22,8 +22,8 @@ const validate = {
       errors.push('Address is required');
     }
 
-    if (!isEmpty(data.fullName)) {
-      if (!validator.isLength(data.fullName, {min: 5})) {
+    if (!isEmpty(data.firstName)) {
+      if (!validator.isLength(data.firstName, {min: 5})) {
         errors.push('Full Name must be atleast 4 characters long');
       }
     }
