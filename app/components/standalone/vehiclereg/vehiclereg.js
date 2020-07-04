@@ -72,7 +72,6 @@ export default function VehicleRegComponent({navigation}) {
       <View
         style={{
           flex: 1,
-          paddingTop: hp('5%'),
           flexDirection: 'row-reverse',
           paddingHorizontal: wp('5%'),
         }}>

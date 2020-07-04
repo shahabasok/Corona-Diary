@@ -11,7 +11,6 @@ export default StyleSheet.create({
   },
   headerNavigationContainer: {
     flex: 1,
-    paddingTop: hp('5%'),
     paddingLeft: wp('5%'),
     paddingRight: wp('5%'),
   },

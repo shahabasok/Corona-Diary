@@ -145,7 +145,9 @@ export default class MyLocationComponent extends Component {
     return (
       <View style={styles.fullScreen}>
         <View style={styles.headerNavigationContainer}>
-          <Text style={{color: 'white', fontSize: wp('4%')}}>Let's save</Text>
+          <Text style={{color: 'white', fontSize: wp('4%')}}>
+            Let's save my
+          </Text>
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <Text
               style={{color: 'white', fontSize: wp('8%'), fontWeight: 'bold'}}>

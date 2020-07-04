@@ -31,7 +31,7 @@ export default function Splash({navigation}) {
       <View style={styles.headerContainer}>
         <Text style={{color: 'white', fontSize: wp('12%')}}>Covid</Text>
         <Text style={{color: 'white', fontSize: wp('15%'), fontWeight: 'bold'}}>
-          Track
+          Diary
         </Text>
       </View>
       <View style={styles.poweredByContainer}>

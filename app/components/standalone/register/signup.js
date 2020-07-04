@@ -46,7 +46,7 @@ export default function SignUpComponent({navigation}) {
 
   return (
     <View style={styles.fullScreen}>
-      <View style={{paddingTop: hp('5%'), flexDirection: 'row-reverse'}}>
+      <View style={{flexDirection: 'row-reverse'}}>
         <Text
           style={{
             color: '#23FE65',
