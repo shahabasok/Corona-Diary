@@ -7,6 +7,8 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
+  BackHandler,
+  DeviceEventEmitter,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -14,6 +16,7 @@ import {
 } from 'react-native-responsive-screen';
 import Geolocation from '@react-native-community/geolocation';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import LocationServicesDialogBox from 'react-native-android-location-services-dialog-box';
 
 import asyncStorageFunction from './../../../lib/asyncStorage.lib';
 import validate from './../../validations/validate';
@@ -33,6 +36,22 @@ export default class MyLocationComponent extends Component {
     };
   }
 
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      LocationServicesDialogBox.forceCloseDialog();
+    });
+
+    DeviceEventEmitter.addListener('locationProviderStatusChange', function(
+      status,
+    ) {
+      console.log(status);
+    });
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this._handleBackPress);
+  }
+
   onChange = (event, selectedDate) => {
     if (event.type == 'set') {
       const currentDate = selectedDate || date;
@@ -49,7 +68,6 @@ export default class MyLocationComponent extends Component {
   };
 
   showMode = currentMode => {
-    console.log(currentMode);
     this.setState({
       show: true,
       mode: currentMode,
@@ -75,6 +93,7 @@ export default class MyLocationComponent extends Component {
       address: this.state.address,
       date: this.state.dateChosen,
       time: this.state.timeChosen,
+      type: 'manual',
     };
 
     const {errors, isValid} = validate.checkLocationData(data);
@@ -117,30 +136,88 @@ export default class MyLocationComponent extends Component {
     }
   };
 
-  // const _checkLocation = () => {
-  //   Geolocation.getCurrentPosition(
-  //     initialPosition => {
-  //       var lat = initialPosition.coords.latitude;
-  //       var lng = initialPosition.coords.longitude;
-  //       console.log(lat);
-  //       console.log(lng);
-  //       console.log('****');
-  //     },
-  //     error => {
-  //       if (error.message === 'Location request timed out') {
-  //         Alert.alert('Hmm..', 'Unable to fetch your Geolocation..', [
-  //           {
-  //             text: 'Cancel',
-  //             onPress: () => null,
-  //             style: 'cancel',
-  //           },
-  //           {text: 'YES', onPress: () => BackHandler.exitApp()},
-  //         ]);
-  //       }
-  //     },
-  //     {enableHighAccuracy: false, timeout: 20000, maximumAge: 1000},
-  //   );
-  // };
+  fetchLocation = async () => {
+    if (Platform.OS === 'android') {
+      LocationServicesDialogBox.checkLocationServicesIsEnabled({
+        message:
+          "<font color='#ffffff'><b>Use GPS Location?</b><br></br> \
+           Covid Diary wants to access your location </font>",
+        ok: 'YES',
+        cancel: 'NO',
+        style: {
+          backgroundColor: '#4B92E0',
+          positiveButtonTextColor: '#f2ca6b',
+          negativeButtonTextColor: 'white',
+        },
+      })
+        .then(async () => {
+          Geolocation.getCurrentPosition(
+            async initialPosition => {
+              var lat = initialPosition.coords.latitude;
+              var lng = initialPosition.coords.longitude;
+
+              var date = Date.now();
+              var d = new Date(date);
+              let previousData = await asyncStorageFunction.retrieveData(
+                'myLocations',
+              );
+
+              let data = {
+                address: lat + ',' + lng,
+                date: d.toDateString(),
+                time: d.toLocaleTimeString(),
+                type: 'auto',
+              };
+
+              if (previousData == false) {
+                var dataArray = [];
+
+                dataArray.push(data);
+
+                let dataToSave = JSON.stringify(dataArray);
+                await asyncStorageFunction.storeData('myLocations', dataToSave);
+                this.props.navigation.goBack();
+              } else {
+                var previousJSON = JSON.parse(previousData);
+
+                previousJSON.unshift(data);
+
+                var updatedData = JSON.stringify(previousJSON);
+
+                await asyncStorageFunction.storeData(
+                  'myLocations',
+                  updatedData,
+                );
+
+                this.props.navigation.goBack();
+              }
+            },
+            error => {
+              if (error.message === 'Location request timed out') {
+                Alert.alert('Hmm..', 'Unable to fetch your Geolocation..', [
+                  {
+                    onPress: () => null,
+                    style: 'cancel',
+                  },
+                  {text: 'OK', onPress: () => {}},
+                ]);
+              }
+            },
+            {enableHighAccuracy: false, timeout: 20000, maximumAge: 1000},
+          );
+        })
+        .catch(() => {
+          Alert.alert('Hmm...', 'Unable to fetch your Geolocation..', [
+            {
+              onPress: () => null,
+              style: 'cancel',
+            },
+            {text: 'OK', onPress: () => {}},
+          ]);
+        });
+    }
+  };
+
   render() {
     return (
       <View style={styles.fullScreen}>
@@ -174,11 +251,14 @@ export default class MyLocationComponent extends Component {
         <View style={{flex: 1, justifyContent: 'center'}}>
           <View style={{paddingHorizontal: wp('5%')}}>
             <Text style={{color: 'white', fontSize: wp('5%')}}>
-              Fetch My Current Location
+              Save My Current Location
             </Text>
             <Text
               style={{color: 'white', fontSize: wp('8%'), fontWeight: 'bold'}}>
               Automatically
+            </Text>
+            <Text style={{color: 'white', fontSize: wp('4%')}}>
+              NB: For better result please turn on your network
             </Text>
           </View>
           <View
@@ -188,7 +268,7 @@ export default class MyLocationComponent extends Component {
               paddingTop: hp('2%'),
             }}>
             <TouchableOpacity
-              // onPress={() => navigateToDashboard()}
+              onPress={() => this.fetchLocation()}
               style={{
                 width: wp('75%'),
                 backgroundColor: '#FFB301',
@@ -201,12 +281,18 @@ export default class MyLocationComponent extends Component {
                   textAlign: 'center',
                   fontSize: wp('5%'),
                 }}>
-                Fetch Location
+                Save My Location
               </Text>
             </TouchableOpacity>
           </View>
         </View>
-        <View style={{flex: 4, justifyContent: 'center'}}>
+        <View
+          style={{flex: 0.5, justifyContent: 'flex-end', alignItems: 'center'}}>
+          <Text style={{fontSize: wp('7%'), color: 'white'}}>
+            - - - OR - - -
+          </Text>
+        </View>
+        <View style={{flex: 3, justifyContent: 'center'}}>
           {this.state.show && (
             <DateTimePicker
               testID="dateTimePicker"

@@ -67,7 +67,6 @@ export default function ScannerComponent({navigation}) {
         );
       }
     } catch (error) {
-      console.log(error);
       Alert.alert(
         'Wrong QR code',
         'Seems like you have scanned a wrong QR Code... \n Please try again',

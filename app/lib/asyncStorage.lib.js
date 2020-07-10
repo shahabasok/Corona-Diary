@@ -10,7 +10,6 @@ asyncStorageFunction = {
       await AsyncStorage.setItem(key, value);
       return true;
     } catch (e) {
-      console.log(e);
       return false;
     }
   },
@@ -24,7 +23,6 @@ asyncStorageFunction = {
         return false;
       }
     } catch (e) {
-      console.log(e);
       return false;
     }
   },
@@ -34,7 +32,6 @@ asyncStorageFunction = {
       await AsyncStorage.removeItem(key);
       return true;
     } catch (e) {
-      console.log(e);
       return false;
     }
   },
@@ -44,7 +41,6 @@ asyncStorageFunction = {
       await AsyncStorage.clear();
       return true;
     } catch (e) {
-      console.log(e);
       return false;
     }
   },

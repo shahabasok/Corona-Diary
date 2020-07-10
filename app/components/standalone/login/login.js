@@ -7,6 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
+  Platform,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -51,6 +52,7 @@ export default function LoginComponent({navigation}) {
       navigation.navigate('Register');
     }
   };
+
   return (
     <View style={styles.fullScreen}>
       <View style={styles.headerNavigationContainer}>

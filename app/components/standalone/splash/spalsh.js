@@ -18,20 +18,19 @@ export default function Splash({navigation}) {
     if (data == false) {
       setTimeout(() => {
         navigation.navigate('UserStack');
-      }, 1000);
+      }, 2000);
     } else {
       setTimeout(() => {
         navigation.navigate('ExistingUser');
-      }, 1000);
+      }, 2000);
     }
   };
 
   return (
     <View style={styles.fullScreen}>
       <View style={styles.headerContainer}>
-        <Text style={{color: 'white', fontSize: wp('12%')}}>Covid</Text>
         <Text style={{color: 'white', fontSize: wp('15%'), fontWeight: 'bold'}}>
-          Diary
+          SAHAYI
         </Text>
       </View>
       <View style={styles.poweredByContainer}>

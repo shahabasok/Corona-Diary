@@ -12,6 +12,7 @@ import PeopleMetComponent from './../components/standalone/peopleMet/peoplemet';
 import AddPeopleComponent from './../components/standalone/addPeople/addpeople';
 import ProfileComponent from './../components/standalone/profile/profile';
 import MyLocationComponent from './../components/standalone/myLocation/mylocation';
+import MapComponent from './../components/standalone/maps/map';
 
 const Tab = createMaterialBottomTabNavigator();
 const TopTabs = createMaterialTopTabNavigator();
@@ -56,6 +57,7 @@ function LocationStackScreen() {
       <LocationStack.Screen name="Location" component={Locations} />
       <LocationStack.Screen name="AddPeople" component={AddPeopleComponent} />
       <LocationStack.Screen name="MyLocation" component={MyLocationComponent} />
+      <LocationStack.Screen name="Map" component={MapComponent} />
     </LocationStack.Navigator>
   );
 }
@@ -65,7 +67,7 @@ function Locations() {
     <TopTabs.Navigator
       tabBarOptions={{
         activeTintColor: 'white',
-        indicatorStyle: {backgroundColor: '#FFB301'},
+        indicatorStyle: {backgroundColor: '#FFB301', height: 5},
         style: {backgroundColor: '#4B92E0'},
       }}>
       <Tab.Screen name="Your Route Map" component={MyRouteComponent} />

@@ -90,23 +90,33 @@ export default function HomeComponent({navigation}) {
         style={{
           flex: 4,
           justifyContent: 'center',
-          alignItems: 'center',
           backgroundColor: 'white',
           left: wp('5%'),
           width: wp('90%'),
           borderRadius: 30,
           bottom: hp('5%'),
         }}>
-        <View>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            paddingHorizontal: wp('10%'),
+          }}>
+          <Text style={{fontSize: wp('4%'), color: '#4B92E0'}}>
+            Show this QR code to
+          </Text>
+          <Text
+            style={{fontSize: wp('6%'), fontWeight: 'bold', color: '#4B92E0'}}>
+            Share Your Details
+          </Text>
+        </View>
+        <View style={{flex: 3, alignItems: 'center'}}>
           <QRCode
             value={qrCodeText}
             size={wp('70%')}
             color="black"
             backgroundColor="white"
           />
-        </View>
-        <View style={{top: hp('3%')}}>
-          <Text>Scan QR code to get the Details</Text>
         </View>
       </View>
     </View>

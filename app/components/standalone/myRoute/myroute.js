@@ -1,14 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {
-  View,
-  Text,
-  StatusBar,
-  TouchableOpacity,
-  TextInput,
-  Alert,
-  Dimensions,
-  FlatList,
-} from 'react-native';
+import {View, Text, TouchableOpacity, Dimensions, FlatList} from 'react-native';
 import {useIsFocused} from '@react-navigation/native';
 import {
   widthPercentageToDP as wp,
@@ -32,8 +23,6 @@ export default function MyRouteComponent({navigation}) {
   const _retrievePeopleMetData = async () => {
     let myRouteData = await asyncStorageFunction.retrieveData('myLocations');
 
-    console.log(myRouteData);
-
     if (myRouteData == false) {
       setMyRoute('');
       setShowEmptyMessage(true);
@@ -46,6 +35,12 @@ export default function MyRouteComponent({navigation}) {
 
   const addMyLocation = () => {
     navigation.navigate('MyLocation');
+  };
+
+  const NavigateToMaps = address => {
+    navigation.navigate('Map', {
+      address: address,
+    });
   };
 
   return (
@@ -74,8 +69,10 @@ export default function MyRouteComponent({navigation}) {
                   alignItems: 'center',
                   paddingTop: 5,
                 }}>
-                <Icon name={'map-marker'} color={'white'} size={wp('5%')} />
                 <View>
+                  <Icon name={'map-marker'} color={'white'} size={wp('5%')} />
+                </View>
+                <View style={{paddingVertical: 5}}>
                   <Text
                     style={{
                       color: 'white',
@@ -84,9 +81,32 @@ export default function MyRouteComponent({navigation}) {
                     }}>
                     {item.address}
                   </Text>
+                  {item.type == 'auto' && (
+                    <View style={{paddingVertical: 5}}>
+                      <TouchableOpacity
+                        onPress={() =>
+                          navigation.navigate('Map', {
+                            address: item.address,
+                          })
+                        }
+                        style={{
+                          backgroundColor: '#FFB301',
+                          justifyContent: 'center',
+                          borderRadius: 10,
+                        }}>
+                        <Text
+                          style={{
+                            color: 'white',
+                            textAlign: 'center',
+                            paddingVertical: 5,
+                          }}>
+                          View On Maps
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  )}
                 </View>
               </View>
-
               <View>
                 <Text
                   style={{
