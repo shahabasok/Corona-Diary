@@ -9,12 +9,13 @@ import {
   Alert,
   BackHandler,
   DeviceEventEmitter,
+  ActivityIndicator,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import Geolocation from '@react-native-community/geolocation';
+import Geolocation from 'react-native-geolocation-service';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import LocationServicesDialogBox from 'react-native-android-location-services-dialog-box';
 
@@ -33,6 +34,7 @@ export default class MyLocationComponent extends Component {
       dateChosen: '',
       timeChosen: '',
       address: '',
+      showActivityIndicator: false,
     };
   }
 
@@ -194,16 +196,19 @@ export default class MyLocationComponent extends Component {
             },
             error => {
               if (error.message === 'Location request timed out') {
-                Alert.alert('Hmm..', 'Unable to fetch your Geolocation..', [
+                Alert.alert('Oops..', 'Unable to fetch your Geolocation..', [
                   {
                     onPress: () => null,
                     style: 'cancel',
                   },
-                  {text: 'OK', onPress: () => {}},
+                  {
+                    text: 'OK',
+                    onPress: () => {},
+                  },
                 ]);
               }
             },
-            {enableHighAccuracy: false, timeout: 20000, maximumAge: 1000},
+            {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
           );
         })
         .catch(() => {
