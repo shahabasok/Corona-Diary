@@ -40,7 +40,7 @@ export default function ScannerComponent({navigation}) {
           scannedJSON.firstName.length <= 40 &&
           scannedJSON.phone.length == 10 &&
           scannedJSON.address.length <= 70 &&
-          scannedJSON.vehicleReg.length <= 12
+          scannedJSON.vehicleReg.length <= 13
         ) {
           var date = Date.now();
           var d = new Date(date);

@@ -129,7 +129,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.coronadiary"
+        applicationId "com.shahabas.sahayi"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

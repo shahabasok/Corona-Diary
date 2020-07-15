@@ -1,4 +1,4 @@
-package com.coronadiary;
+package com.shahabas.sahayi;
 
 import com.facebook.react.ReactActivity;
 

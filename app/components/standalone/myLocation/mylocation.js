@@ -15,7 +15,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import Geolocation from 'react-native-geolocation-service';
+import Geolocation from '@react-native-community/geolocation';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import LocationServicesDialogBox from 'react-native-android-location-services-dialog-box';
 
@@ -143,7 +143,7 @@ export default class MyLocationComponent extends Component {
       LocationServicesDialogBox.checkLocationServicesIsEnabled({
         message:
           "<font color='#ffffff'><b>Use GPS Location?</b><br></br> \
-           Covid Diary wants to access your location </font>",
+           Sahayi wants to access your location </font>",
         ok: 'YES',
         cancel: 'NO',
         style: {
@@ -208,7 +208,7 @@ export default class MyLocationComponent extends Component {
                 ]);
               }
             },
-            {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+            {enableHighAccuracy: false, timeout: 15000, maximumAge: 1000},
           );
         })
         .catch(() => {

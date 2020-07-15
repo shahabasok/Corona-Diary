@@ -14,6 +14,14 @@ const validate = {
       errors.push('Full Name is required');
     }
 
+    if (!isEmpty(data.firstName)) {
+      let inputNumer = data.firstName;
+      var phoneno = /^[a-zA-Z ]+$/;
+      if (!inputNumer.match(phoneno)) {
+        errors.push('Enter a valid first name');
+      }
+    }
+
     if (validator.isEmpty(data.phone)) {
       errors.push('Mobile Number is required');
     }
