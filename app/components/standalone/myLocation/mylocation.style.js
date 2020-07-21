@@ -10,7 +10,6 @@ export default StyleSheet.create({
     backgroundColor: '#4B92E0',
   },
   headerNavigationContainer: {
-    flex: 1,
     paddingLeft: wp('5%'),
     paddingRight: wp('5%'),
   },
@@ -33,5 +32,29 @@ export default StyleSheet.create({
     paddingBottom: hp('1%'),
     paddingLeft: wp('5%'),
     paddingRight: wp('5%'),
+  },
+  disabled: {
+    width: wp('75%'),
+    backgroundColor: 'grey',
+    padding: 10,
+    borderRadius: 10,
+  },
+  buttonWrapper: {
+    width: wp('75%'),
+    backgroundColor: '#FFB301',
+    padding: 10,
+    borderRadius: 10,
+  },
+  disabledDate: {
+    width: wp('35%'),
+    backgroundColor: 'grey',
+    padding: 10,
+    borderRadius: 10,
+  },
+  buttonWrapperDisabled: {
+    width: wp('35%'),
+    backgroundColor: '#FFB301',
+    padding: 10,
+    borderRadius: 10,
   },
 });

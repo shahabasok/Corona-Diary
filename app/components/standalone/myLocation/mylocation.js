@@ -10,6 +10,7 @@ import {
   BackHandler,
   DeviceEventEmitter,
   ActivityIndicator,
+  ScrollView,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -18,6 +19,7 @@ import {
 import Geolocation from '@react-native-community/geolocation';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import LocationServicesDialogBox from 'react-native-android-location-services-dialog-box';
+import CheckBox from '@react-native-community/checkbox';
 
 import asyncStorageFunction from './../../../lib/asyncStorage.lib';
 import validate from './../../validations/validate';
@@ -35,6 +37,10 @@ export default class MyLocationComponent extends Component {
       timeChosen: '',
       address: '',
       showActivityIndicator: false,
+      manualExpanded: false,
+      expanded: true,
+      disableManualButton: true,
+      disbaleAutoButton: false,
     };
   }
 
@@ -223,6 +229,24 @@ export default class MyLocationComponent extends Component {
     }
   };
 
+  handlePress = () => {
+    this.setState({
+      expanded: !this.state.expanded,
+      manualExpanded: this.state.expanded,
+      disableManualButton: !this.state.expanded,
+      disbaleAutoButton: this.state.expanded,
+    });
+  };
+
+  handleManualPress = () => {
+    this.setState({
+      manualExpanded: !this.state.manualExpanded,
+      expanded: this.state.manualExpanded,
+      disableManualButton: this.state.manualExpanded,
+      disbaleAutoButton: !this.state.manualExpanded,
+    });
+  };
+
   render() {
     return (
       <View style={styles.fullScreen}>
@@ -253,191 +277,440 @@ export default class MyLocationComponent extends Component {
             </Text>
           </View>
         </View>
-        <View style={{flex: 1, justifyContent: 'center'}}>
-          <View style={{paddingHorizontal: wp('5%')}}>
-            <Text style={{color: 'white', fontSize: wp('5%')}}>
-              Save My Current Location
-            </Text>
-            <Text
-              style={{color: 'white', fontSize: wp('8%'), fontWeight: 'bold'}}>
-              Automatically
-            </Text>
-            <Text style={{color: 'white', fontSize: wp('4%')}}>
-              NB: For better result please turn on your network
-            </Text>
-          </View>
-          <View
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              paddingTop: hp('2%'),
-            }}>
-            <TouchableOpacity
-              onPress={() => this.fetchLocation()}
-              style={{
-                width: wp('75%'),
-                backgroundColor: '#FFB301',
-                padding: 10,
-                borderRadius: 10,
-              }}>
+        <ScrollView>
+          <View style={{justifyContent: 'center', paddingVertical: hp('5%')}}>
+            <View style={{paddingHorizontal: wp('5%')}}>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <View>
+                  <CheckBox
+                    disabled={false}
+                    value={this.state.expanded}
+                    tintColors={{true: '#23FE65'}}
+                    onValueChange={() => this.handlePress()}
+                  />
+                </View>
+                <View>
+                  <Text style={{color: 'white', fontSize: wp('5%')}}>
+                    Save My Current Location
+                  </Text>
+                </View>
+              </View>
               <Text
                 style={{
                   color: 'white',
-                  textAlign: 'center',
-                  fontSize: wp('5%'),
+                  fontSize: wp('8%'),
+                  fontWeight: 'bold',
                 }}>
-                Save My Location
+                Automatically
               </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View
-          style={{flex: 0.5, justifyContent: 'flex-end', alignItems: 'center'}}>
-          <Text style={{fontSize: wp('7%'), color: 'white'}}>
-            - - - OR - - -
-          </Text>
-        </View>
-        <View style={{flex: 3, justifyContent: 'center'}}>
-          {this.state.show && (
-            <DateTimePicker
-              testID="dateTimePicker"
-              value={this.state.date}
-              mode={this.state.mode}
-              is24Hour={false}
-              display="default"
-              onChange={this.onChange}
-            />
-          )}
-          <View style={{paddingHorizontal: wp('5%')}}>
-            <Text style={{color: 'white', fontSize: wp('5%')}}>
-              Add My Location Details
-            </Text>
-            <Text
-              style={{color: 'white', fontSize: wp('8%'), fontWeight: 'bold'}}>
-              Manually
-            </Text>
-          </View>
-          <View style={{justifyContent: 'space-around', alignItems: 'center'}}>
-            <View style={{paddingTop: hp('2%')}}>
-              <TextInput
-                name="email"
-                label="Password"
-                style={styles.input1}
-                returnKeyType="next"
-                autoCapitalize="none"
-                multiline={true}
-                value={this.state.address}
-                inlineImageLeft="mail"
-                autoCorrect={false}
-                secureTextEntry={true}
-                maxLength={70}
-                placeholder="Place you visited"
-                placeholderTextColor="black"
-                onChangeText={address => {
-                  this.setState({
-                    address: address,
-                  });
-                }}
-              />
+              <Text style={{color: 'white', fontSize: wp('4%')}}>
+                NB: For better result please turn on your network
+              </Text>
             </View>
-            <View style={{flexDirection: 'row', paddingTop: hp('2%')}}>
-              <View style={{right: wp('5%')}}>
-                <TouchableOpacity
-                  onPress={() => this.showDatepicker()}
-                  style={{
-                    width: wp('30%'),
-                    backgroundColor: '#FFB301',
-                    padding: 10,
-                    borderRadius: 10,
-                  }}>
-                  <Text
-                    style={{
-                      color: 'white',
-                      textAlign: 'center',
-                      fontSize: wp('5%'),
-                    }}>
-                    Select Date
-                  </Text>
-                </TouchableOpacity>
-                <View>
-                  <Text
-                    style={{
-                      color: 'white',
-                      textAlign: 'center',
-                      fontSize: wp('5%'),
-                    }}>
-                    Date Selected:
-                  </Text>
-                  <Text
-                    style={{
-                      color: 'white',
-                      textAlign: 'center',
-                      fontSize: wp('5%'),
-                    }}>
-                    {this.state.dateChosen}
-                  </Text>
-                </View>
-              </View>
-              <View style={{left: wp('5%')}}>
-                <TouchableOpacity
-                  onPress={() => this.showTimepicker()}
-                  style={{
-                    width: wp('30%'),
-                    backgroundColor: '#FFB301',
-                    padding: 10,
-                    borderRadius: 10,
-                  }}>
-                  <Text
-                    style={{
-                      color: 'white',
-                      textAlign: 'center',
-                      fontSize: wp('5%'),
-                    }}>
-                    Select Time
-                  </Text>
-                </TouchableOpacity>
-                <View>
-                  <Text
-                    style={{
-                      color: 'white',
-                      textAlign: 'center',
-                      fontSize: wp('5%'),
-                    }}>
-                    Time Selected:
-                  </Text>
-                  <Text
-                    style={{
-                      color: 'white',
-                      textAlign: 'center',
-                      fontSize: wp('5%'),
-                    }}>
-                    {this.state.timeChosen}
-                  </Text>
-                </View>
-              </View>
-            </View>
-            <View style={{paddingTop: hp('2%')}}>
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                paddingTop: hp('2%'),
+              }}>
               <TouchableOpacity
-                onPress={() => this.saveLocation()}
-                style={{
-                  width: wp('75%'),
-                  backgroundColor: '#FFB301',
-                  padding: 10,
-                  borderRadius: 10,
-                }}>
+                disabled={this.state.disbaleAutoButton}
+                onPress={() => this.fetchLocation()}
+                style={
+                  this.state.disbaleAutoButton
+                    ? styles.disabled
+                    : styles.buttonWrapper
+                }>
                 <Text
                   style={{
                     color: 'white',
                     textAlign: 'center',
                     fontSize: wp('5%'),
                   }}>
-                  Save
+                  Save My Location
                 </Text>
               </TouchableOpacity>
             </View>
           </View>
-        </View>
+          <View style={{paddingVertical: hp('2%')}}>
+            <Text
+              style={{
+                fontSize: wp('5%'),
+                color: '#808080',
+                textAlign: 'center',
+              }}>
+              -------------------------------------
+            </Text>
+          </View>
+          <View style={{justifyContent: 'center', paddingVertical: hp('5%')}}>
+            {this.state.show && (
+              <DateTimePicker
+                testID="dateTimePicker"
+                value={this.state.date}
+                mode={this.state.mode}
+                is24Hour={false}
+                display="default"
+                onChange={this.onChange}
+              />
+            )}
+            <View style={{paddingHorizontal: wp('5%')}}>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <View>
+                  <CheckBox
+                    disabled={false}
+                    value={this.state.manualExpanded}
+                    tintColors={{true: '#23FE65'}}
+                    onValueChange={() => this.handleManualPress()}
+                  />
+                </View>
+                <View>
+                  <Text style={{color: 'white', fontSize: wp('5%')}}>
+                    Add My Location Details
+                  </Text>
+                </View>
+              </View>
+              <Text
+                style={{
+                  color: 'white',
+                  fontSize: wp('8%'),
+                  fontWeight: 'bold',
+                }}>
+                Manually
+              </Text>
+            </View>
+            <View
+              style={{justifyContent: 'space-around', alignItems: 'center'}}>
+              <View style={{paddingTop: hp('2%')}}>
+                <TextInput
+                  name="email"
+                  label="Password"
+                  style={styles.input1}
+                  returnKeyType="next"
+                  autoCapitalize="none"
+                  multiline={true}
+                  value={this.state.address}
+                  inlineImageLeft="mail"
+                  autoCorrect={false}
+                  secureTextEntry={true}
+                  editable={this.state.disableManualButton}
+                  maxLength={70}
+                  placeholder="Place you visited"
+                  placeholderTextColor="black"
+                  onChangeText={address => {
+                    this.setState({
+                      address: address,
+                    });
+                  }}
+                />
+              </View>
+              <View style={{flexDirection: 'row', paddingTop: hp('2%')}}>
+                <View style={{right: wp('5%')}}>
+                  <TouchableOpacity
+                    disabled={this.state.disableManualButton}
+                    onPress={() => this.showDatepicker()}
+                    style={
+                      this.state.disableManualButton
+                        ? styles.disabledDate
+                        : styles.buttonWrapperDisabled
+                    }>
+                    <Text
+                      style={{
+                        color: 'white',
+                        textAlign: 'center',
+                        fontSize: wp('5%'),
+                      }}>
+                      Select Date
+                    </Text>
+                  </TouchableOpacity>
+                  <View>
+                    <Text
+                      style={{
+                        color: 'white',
+                        textAlign: 'center',
+                        fontSize: wp('5%'),
+                      }}>
+                      Date Selected:
+                    </Text>
+                    <Text
+                      style={{
+                        color: 'white',
+                        textAlign: 'center',
+                        fontSize: wp('5%'),
+                      }}>
+                      {this.state.dateChosen}
+                    </Text>
+                  </View>
+                </View>
+                <View style={{left: wp('5%')}}>
+                  <TouchableOpacity
+                    disabled={this.state.disableManualButton}
+                    onPress={() => this.showTimepicker()}
+                    style={
+                      this.state.disableManualButton
+                        ? styles.disabledDate
+                        : styles.buttonWrapperDisabled
+                    }>
+                    <Text
+                      style={{
+                        color: 'white',
+                        textAlign: 'center',
+                        fontSize: wp('5%'),
+                      }}>
+                      Select Time
+                    </Text>
+                  </TouchableOpacity>
+                  <View>
+                    <Text
+                      style={{
+                        color: 'white',
+                        textAlign: 'center',
+                        fontSize: wp('5%'),
+                      }}>
+                      Time Selected:
+                    </Text>
+                    <Text
+                      style={{
+                        color: 'white',
+                        textAlign: 'center',
+                        fontSize: wp('5%'),
+                      }}>
+                      {this.state.timeChosen}
+                    </Text>
+                  </View>
+                </View>
+              </View>
+              <View style={{paddingTop: hp('2%')}}>
+                <TouchableOpacity
+                  disabled={this.state.disableManualButton}
+                  onPress={() => this.saveLocation()}
+                  style={
+                    this.state.disableManualButton
+                      ? styles.disabled
+                      : styles.buttonWrapper
+                  }>
+                  <Text
+                    style={{
+                      color: 'white',
+                      textAlign: 'center',
+                      fontSize: wp('5%'),
+                    }}>
+                    Save
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </ScrollView>
       </View>
     );
   }
+}
+
+{
+  /* <View style={{flex: 1, justifyContent: 'center'}}>
+          <List.Accordion
+            title="Save Location Automatically"
+            titleStyle={{color: '#23FE65', fontSize: 18, fontWeight: 'bold'}}
+            expanded={this.state.expanded}
+            onPress={() => this.handlePress()}>
+            <View style={{justifyContent: 'center'}}>
+              <View style={{paddingHorizontal: wp('5%')}}>
+                <Text style={{color: 'white', fontSize: wp('5%')}}>
+                  Save My Current Location
+                </Text>
+                <Text
+                  style={{
+                    color: 'white',
+                    fontSize: wp('8%'),
+                    fontWeight: 'bold',
+                  }}>
+                  Automatically
+                </Text>
+                <Text style={{color: 'white', fontSize: wp('4%')}}>
+                  NB: For better result please turn on your network
+                </Text>
+              </View>
+              <View
+                style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  paddingTop: hp('2%'),
+                }}>
+                <TouchableOpacity
+                  onPress={() => this.fetchLocation()}
+                  style={{
+                    width: wp('75%'),
+                    backgroundColor: '#FFB301',
+                    padding: 10,
+                    borderRadius: 10,
+                  }}>
+                  <Text
+                    style={{
+                      color: 'white',
+                      textAlign: 'center',
+                      fontSize: wp('5%'),
+                    }}>
+                    Save My Location
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              <View style={{justifyContent: 'flex-end', alignItems: 'center'}}>
+                <Text style={{fontSize: wp('7%'), color: 'white'}}>
+                  - - - OR - - -
+                </Text>
+              </View>
+            </View>
+          </List.Accordion>
+          <List.Accordion
+            title="Save Location Manually"
+            expanded={this.state.manualExpanded}
+            titleStyle={{color: '#23FE65', fontSize: 18, fontWeight: 'bold'}}
+            onPress={() => this.handleManualPress()}>
+            <View>
+              {this.state.show && (
+                <DateTimePicker
+                  testID="dateTimePicker"
+                  value={this.state.date}
+                  mode={this.state.mode}
+                  is24Hour={false}
+                  display="default"
+                  onChange={this.onChange}
+                />
+              )}
+              <View style={{paddingHorizontal: wp('5%')}}>
+                <Text style={{color: 'white', fontSize: wp('5%')}}>
+                  Add My Location Details
+                </Text>
+                <Text
+                  style={{
+                    color: 'white',
+                    fontSize: wp('8%'),
+                    fontWeight: 'bold',
+                  }}>
+                  Manually
+                </Text>
+              </View>
+              <View
+                style={{justifyContent: 'space-around', alignItems: 'center'}}>
+                <View style={{paddingTop: hp('2%')}}>
+                  <TextInput
+                    name="email"
+                    label="Password"
+                    style={styles.input1}
+                    returnKeyType="next"
+                    autoCapitalize="none"
+                    multiline={true}
+                    value={this.state.address}
+                    inlineImageLeft="mail"
+                    autoCorrect={false}
+                    secureTextEntry={true}
+                    maxLength={70}
+                    placeholder="Place you visited"
+                    placeholderTextColor="black"
+                    onChangeText={address => {
+                      this.setState({
+                        address: address,
+                      });
+                    }}
+                  />
+                </View>
+                <View style={{flexDirection: 'row', paddingTop: hp('2%')}}>
+                  <View style={{right: wp('5%')}}>
+                    <TouchableOpacity
+                      onPress={() => this.showDatepicker()}
+                      style={{
+                        width: wp('30%'),
+                        backgroundColor: '#FFB301',
+                        padding: 10,
+                        borderRadius: 10,
+                      }}>
+                      <Text
+                        style={{
+                          color: 'white',
+                          textAlign: 'center',
+                          fontSize: wp('5%'),
+                        }}>
+                        Select Date
+                      </Text>
+                    </TouchableOpacity>
+                    <View>
+                      <Text
+                        style={{
+                          color: 'white',
+                          textAlign: 'center',
+                          fontSize: wp('5%'),
+                        }}>
+                        Date Selected:
+                      </Text>
+                      <Text
+                        style={{
+                          color: 'white',
+                          textAlign: 'center',
+                          fontSize: wp('5%'),
+                        }}>
+                        {this.state.dateChosen}
+                      </Text>
+                    </View>
+                  </View>
+                  <View style={{left: wp('5%')}}>
+                    <TouchableOpacity
+                      onPress={() => this.showTimepicker()}
+                      style={{
+                        width: wp('30%'),
+                        backgroundColor: '#FFB301',
+                        padding: 10,
+                        borderRadius: 10,
+                      }}>
+                      <Text
+                        style={{
+                          color: 'white',
+                          textAlign: 'center',
+                          fontSize: wp('5%'),
+                        }}>
+                        Select Time
+                      </Text>
+                    </TouchableOpacity>
+                    <View>
+                      <Text
+                        style={{
+                          color: 'white',
+                          textAlign: 'center',
+                          fontSize: wp('5%'),
+                        }}>
+                        Time Selected:
+                      </Text>
+                      <Text
+                        style={{
+                          color: 'white',
+                          textAlign: 'center',
+                          fontSize: wp('5%'),
+                        }}>
+                        {this.state.timeChosen}
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+                <View style={{paddingTop: hp('2%')}}>
+                  <TouchableOpacity
+                    onPress={() => this.saveLocation()}
+                    style={{
+                      width: wp('75%'),
+                      backgroundColor: '#FFB301',
+                      padding: 10,
+                      borderRadius: 10,
+                    }}>
+                    <Text
+                      style={{
+                        color: 'white',
+                        textAlign: 'center',
+                        fontSize: wp('5%'),
+                      }}>
+                      Save
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          </List.Accordion>
+        </View> */
 }
