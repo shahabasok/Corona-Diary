@@ -114,7 +114,7 @@ export default function HomeComponent({navigation}) {
           <QRCode
             value={qrCodeText}
             size={wp('70%')}
-            color="black"
+            color="#000000"
             backgroundColor="white"
           />
         </View>

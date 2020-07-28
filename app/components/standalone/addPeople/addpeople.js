@@ -126,7 +126,7 @@ export default function AddPeopleComponent({navigation}) {
               autoCorrect={false}
               maxLength={30}
               placeholder="Full Name"
-              placeholderTextColor="black"
+              placeholderTextColor="#000000"
               onChangeText={fullName => {
                 setFullName(fullName);
               }}
@@ -145,7 +145,7 @@ export default function AddPeopleComponent({navigation}) {
               autoCorrect={false}
               maxLength={10}
               placeholder="Mobile"
-              placeholderTextColor="black"
+              placeholderTextColor="#000000"
               onChangeText={phone => {
                 setPhone(phone);
               }}
@@ -165,11 +165,11 @@ export default function AddPeopleComponent({navigation}) {
               secureTextEntry={true}
               maxLength={70}
               placeholder="Address"
-              placeholderTextColor="black"
+              placeholderTextColor="#000000"
               onChangeText={address => {
                 setAddress(address);
               }}
-              onSubmitEditing={() => NaviagteToDashboard()}
+              onSubmitEditing={() => navigateToDashboard()}
             />
           </View>
         </View>

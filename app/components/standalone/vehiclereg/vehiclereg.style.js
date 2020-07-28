@@ -10,7 +10,7 @@ export default StyleSheet.create({
     backgroundColor: '#4B92E0',
   },
   input: {
-    color: 'black',
+    color: '#000000',
     width: wp('75%'),
     backgroundColor: 'white',
     borderRadius: 5,

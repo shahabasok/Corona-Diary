@@ -97,7 +97,7 @@ export default function LoginComponent({navigation}) {
               autoCorrect={false}
               maxLength={30}
               placeholder="Full Name"
-              placeholderTextColor="black"
+              placeholderTextColor="#000000"
               onChangeText={fullName => {
                 setFullName(fullName);
               }}
@@ -112,11 +112,10 @@ export default function LoginComponent({navigation}) {
               returnKeyType="next"
               autoCapitalize="none"
               value={phone}
-              inlineImageLeft="mail"
               autoCorrect={false}
               maxLength={10}
               placeholder="Mobile"
-              placeholderTextColor="black"
+              placeholderTextColor="#000000"
               onChangeText={phone => {
                 setPhone(phone);
               }}
@@ -131,16 +130,15 @@ export default function LoginComponent({navigation}) {
               autoCapitalize="none"
               multiline={true}
               value={address}
-              inlineImageLeft="mail"
               autoCorrect={false}
               secureTextEntry={true}
               maxLength={70}
               placeholder="Address"
-              placeholderTextColor="black"
+              placeholderTextColor="#000000"
               onChangeText={address => {
                 setAddress(address);
               }}
-              onSubmitEditing={() => NaviagteToDashboard()}
+              onSubmitEditing={() => navigateToDashboard()}
             />
           </View>
         </View>

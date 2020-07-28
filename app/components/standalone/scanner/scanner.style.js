@@ -7,6 +7,6 @@ import {
 export default StyleSheet.create({
   fullScreen: {
     flex: 1,
-    backgroundColor: 'black',
+    backgroundColor: '#000000',
   },
 });

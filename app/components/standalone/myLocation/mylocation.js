@@ -19,7 +19,7 @@ import {
 import Geolocation from '@react-native-community/geolocation';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import LocationServicesDialogBox from 'react-native-android-location-services-dialog-box';
-import CheckBox from '@react-native-community/checkbox';
+import {RadioButton} from 'react-native-paper';
 
 import asyncStorageFunction from './../../../lib/asyncStorage.lib';
 import validate from './../../validations/validate';
@@ -41,6 +41,7 @@ export default class MyLocationComponent extends Component {
       expanded: true,
       disableManualButton: true,
       disbaleAutoButton: false,
+      checked: 'first',
     };
   }
 
@@ -61,6 +62,7 @@ export default class MyLocationComponent extends Component {
   }
 
   onChange = (event, selectedDate) => {
+    console.log(event.type);
     if (event.type == 'set') {
       const currentDate = selectedDate || date;
 
@@ -70,6 +72,12 @@ export default class MyLocationComponent extends Component {
         dateChosen: d.toDateString(),
         timeChosen: d.toLocaleTimeString(),
         date: currentDate,
+        show: false,
+      });
+    } else if (event.type == 'dismissed') {
+      this.setState({
+        dateChosen: '',
+        timeChosen: '',
         show: false,
       });
     }
@@ -235,6 +243,7 @@ export default class MyLocationComponent extends Component {
       manualExpanded: this.state.expanded,
       disableManualButton: !this.state.expanded,
       disbaleAutoButton: this.state.expanded,
+      checked: this.state.expanded ? 'second' : 'first',
     });
   };
 
@@ -244,6 +253,7 @@ export default class MyLocationComponent extends Component {
       expanded: this.state.manualExpanded,
       disableManualButton: this.state.manualExpanded,
       disbaleAutoButton: !this.state.manualExpanded,
+      checked: this.state.manualExpanded ? 'first' : 'second',
     });
   };
 
@@ -282,11 +292,13 @@ export default class MyLocationComponent extends Component {
             <View style={{paddingHorizontal: wp('5%')}}>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <View>
-                  <CheckBox
-                    disabled={false}
-                    value={this.state.expanded}
-                    tintColors={{true: '#23FE65'}}
-                    onValueChange={() => this.handlePress()}
+                  <RadioButton
+                    value="first"
+                    color={'#23FE65'}
+                    status={
+                      this.state.checked === 'first' ? 'checked' : 'unchecked'
+                    }
+                    onPress={() => this.handlePress()}
                   />
                 </View>
                 <View>
@@ -339,7 +351,7 @@ export default class MyLocationComponent extends Component {
                 color: '#808080',
                 textAlign: 'center',
               }}>
-              -------------------------------------
+              ____________________________
             </Text>
           </View>
           <View style={{justifyContent: 'center', paddingVertical: hp('5%')}}>
@@ -356,11 +368,13 @@ export default class MyLocationComponent extends Component {
             <View style={{paddingHorizontal: wp('5%')}}>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <View>
-                  <CheckBox
-                    disabled={false}
-                    value={this.state.manualExpanded}
-                    tintColors={{true: '#23FE65'}}
-                    onValueChange={() => this.handleManualPress()}
+                  <RadioButton
+                    value="second"
+                    color={'#23FE65'}
+                    status={
+                      this.state.checked === 'second' ? 'checked' : 'unchecked'
+                    }
+                    onPress={() => this.handleManualPress()}
                   />
                 </View>
                 <View>
@@ -392,10 +406,9 @@ export default class MyLocationComponent extends Component {
                   inlineImageLeft="mail"
                   autoCorrect={false}
                   secureTextEntry={true}
-                  editable={this.state.disableManualButton}
                   maxLength={70}
                   placeholder="Place you visited"
-                  placeholderTextColor="black"
+                  placeholderTextColor="#000000"
                   onChangeText={address => {
                     this.setState({
                       address: address,
@@ -504,213 +517,4 @@ export default class MyLocationComponent extends Component {
       </View>
     );
   }
-}
-
-{
-  /* <View style={{flex: 1, justifyContent: 'center'}}>
-          <List.Accordion
-            title="Save Location Automatically"
-            titleStyle={{color: '#23FE65', fontSize: 18, fontWeight: 'bold'}}
-            expanded={this.state.expanded}
-            onPress={() => this.handlePress()}>
-            <View style={{justifyContent: 'center'}}>
-              <View style={{paddingHorizontal: wp('5%')}}>
-                <Text style={{color: 'white', fontSize: wp('5%')}}>
-                  Save My Current Location
-                </Text>
-                <Text
-                  style={{
-                    color: 'white',
-                    fontSize: wp('8%'),
-                    fontWeight: 'bold',
-                  }}>
-                  Automatically
-                </Text>
-                <Text style={{color: 'white', fontSize: wp('4%')}}>
-                  NB: For better result please turn on your network
-                </Text>
-              </View>
-              <View
-                style={{
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  paddingTop: hp('2%'),
-                }}>
-                <TouchableOpacity
-                  onPress={() => this.fetchLocation()}
-                  style={{
-                    width: wp('75%'),
-                    backgroundColor: '#FFB301',
-                    padding: 10,
-                    borderRadius: 10,
-                  }}>
-                  <Text
-                    style={{
-                      color: 'white',
-                      textAlign: 'center',
-                      fontSize: wp('5%'),
-                    }}>
-                    Save My Location
-                  </Text>
-                </TouchableOpacity>
-              </View>
-              <View style={{justifyContent: 'flex-end', alignItems: 'center'}}>
-                <Text style={{fontSize: wp('7%'), color: 'white'}}>
-                  - - - OR - - -
-                </Text>
-              </View>
-            </View>
-          </List.Accordion>
-          <List.Accordion
-            title="Save Location Manually"
-            expanded={this.state.manualExpanded}
-            titleStyle={{color: '#23FE65', fontSize: 18, fontWeight: 'bold'}}
-            onPress={() => this.handleManualPress()}>
-            <View>
-              {this.state.show && (
-                <DateTimePicker
-                  testID="dateTimePicker"
-                  value={this.state.date}
-                  mode={this.state.mode}
-                  is24Hour={false}
-                  display="default"
-                  onChange={this.onChange}
-                />
-              )}
-              <View style={{paddingHorizontal: wp('5%')}}>
-                <Text style={{color: 'white', fontSize: wp('5%')}}>
-                  Add My Location Details
-                </Text>
-                <Text
-                  style={{
-                    color: 'white',
-                    fontSize: wp('8%'),
-                    fontWeight: 'bold',
-                  }}>
-                  Manually
-                </Text>
-              </View>
-              <View
-                style={{justifyContent: 'space-around', alignItems: 'center'}}>
-                <View style={{paddingTop: hp('2%')}}>
-                  <TextInput
-                    name="email"
-                    label="Password"
-                    style={styles.input1}
-                    returnKeyType="next"
-                    autoCapitalize="none"
-                    multiline={true}
-                    value={this.state.address}
-                    inlineImageLeft="mail"
-                    autoCorrect={false}
-                    secureTextEntry={true}
-                    maxLength={70}
-                    placeholder="Place you visited"
-                    placeholderTextColor="black"
-                    onChangeText={address => {
-                      this.setState({
-                        address: address,
-                      });
-                    }}
-                  />
-                </View>
-                <View style={{flexDirection: 'row', paddingTop: hp('2%')}}>
-                  <View style={{right: wp('5%')}}>
-                    <TouchableOpacity
-                      onPress={() => this.showDatepicker()}
-                      style={{
-                        width: wp('30%'),
-                        backgroundColor: '#FFB301',
-                        padding: 10,
-                        borderRadius: 10,
-                      }}>
-                      <Text
-                        style={{
-                          color: 'white',
-                          textAlign: 'center',
-                          fontSize: wp('5%'),
-                        }}>
-                        Select Date
-                      </Text>
-                    </TouchableOpacity>
-                    <View>
-                      <Text
-                        style={{
-                          color: 'white',
-                          textAlign: 'center',
-                          fontSize: wp('5%'),
-                        }}>
-                        Date Selected:
-                      </Text>
-                      <Text
-                        style={{
-                          color: 'white',
-                          textAlign: 'center',
-                          fontSize: wp('5%'),
-                        }}>
-                        {this.state.dateChosen}
-                      </Text>
-                    </View>
-                  </View>
-                  <View style={{left: wp('5%')}}>
-                    <TouchableOpacity
-                      onPress={() => this.showTimepicker()}
-                      style={{
-                        width: wp('30%'),
-                        backgroundColor: '#FFB301',
-                        padding: 10,
-                        borderRadius: 10,
-                      }}>
-                      <Text
-                        style={{
-                          color: 'white',
-                          textAlign: 'center',
-                          fontSize: wp('5%'),
-                        }}>
-                        Select Time
-                      </Text>
-                    </TouchableOpacity>
-                    <View>
-                      <Text
-                        style={{
-                          color: 'white',
-                          textAlign: 'center',
-                          fontSize: wp('5%'),
-                        }}>
-                        Time Selected:
-                      </Text>
-                      <Text
-                        style={{
-                          color: 'white',
-                          textAlign: 'center',
-                          fontSize: wp('5%'),
-                        }}>
-                        {this.state.timeChosen}
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-                <View style={{paddingTop: hp('2%')}}>
-                  <TouchableOpacity
-                    onPress={() => this.saveLocation()}
-                    style={{
-                      width: wp('75%'),
-                      backgroundColor: '#FFB301',
-                      padding: 10,
-                      borderRadius: 10,
-                    }}>
-                    <Text
-                      style={{
-                        color: 'white',
-                        textAlign: 'center',
-                        fontSize: wp('5%'),
-                      }}>
-                      Save
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </View>
-          </List.Accordion>
-        </View> */
 }

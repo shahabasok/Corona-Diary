@@ -124,7 +124,7 @@ export default function VehicleRegComponent({navigation}) {
             secureTextEntry={true}
             maxLength={30}
             placeholder="Vehicle Number"
-            placeholderTextColor="black"
+            placeholderTextColor="#000000"
             onChangeText={vehicleReg => {
               setVehicleReg(vehicleReg);
             }}
